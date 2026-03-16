@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Сколько часов прошло?</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+
+.menu li.active {
+    border-top: 2px solid #59C3FF;
+
+    background-image: linear-gradient(
+        180deg,
+        rgba(89,195,255,1.00) 0%,
+        rgba(0,118,187,1.00) 100%
+    );
+
+    color: #434343;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    min-height: 40px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<table width="100%" border="0" class="menu">
+
+<tr>
+<td align="center">
+
+</td>
+</tr>
+
+</table>
+
+
+<div id="content"></div>
+
+
+<div class="footer">
+
+<span id="genTime"></span>
+
+<br>
+by UniON
+<br><br><br>
+
+</div>
+
+
+<script>
+
+/* случайное число в футере */
+
+function updateGenTime() {
+
+    let val = Math.random().toExponential(2);
+    $("#genTime").text(val);
+
+}
+
+
+/* загрузка страницы */
+
+function loadPage(url, addToHash = true) {
+
+    $.get(url, function (data) {
+
+        $("#content").html(data);
+        updateGenTime();
+
+    });
+
+    if (addToHash) {
+
+        let id = $(".menu li.active").parent().data("id");
+
+        if (id)
+            window.location.hash = url + "#" + id;
+        else
+            window.location.hash = url;
+
+    }
+
+}
+
+
+/* клики меню */
+
+$(document).on("click", ".ajax-link", function (e) {
+
+    e.preventDefault();
+
+    let url = $(this).attr("href");
+
+    $(".menu li").removeClass("active");
+    $(this).find("li").addClass("active");
+
+    loadPage(url);
+
+});
+
+
+/* работа кнопок назад/вперёд */
+
+$(window).on("hashchange", function () {
+
+    let fullHash = window.location.hash.substr(1);
+
+    if (!fullHash) return;
+
+    let parts = fullHash.split("#");
+
+    let url = parts[0];
+    let id  = parts[1];
+
+    loadPage(url, false);
+
+    $(".menu li").removeClass("active");
+
+    if (id)
+        $(".ajax-link[data-id='" + id + "']").find("li").addClass("active");
+    else
+        $(".ajax-link[href='" + url + "']").first().find("li").addClass("active");
+
+});
+
+
+/* старт сайта */
+
+$(function () {
+
+    let fullHash = window.location.hash.substr(1);
+
+    if (fullHash) {
+
+        let parts = fullHash.split("#");
+
+        let url = parts[0];
+        let id  = parts[1];
+
+        loadPage(url, false);
+
+        $(".menu li").removeClass("active");
+
+        if (id)
+            $(".ajax-link[data-id='" + id + "']").find("li").addClass("active");
+        else
+            $(".ajax-link[href='" + url + "']").first().find("li").addClass("active");
+
+    } else {
+
+        loadPage("home.html", false);
+
+    }
+
+});
+
+</script>
+
+
+</body>
+</html>
