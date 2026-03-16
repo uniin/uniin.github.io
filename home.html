@@ -126,6 +126,12 @@ function calcTime() {
     let end = new Date(d2 + "T" + t2);
 
     let diff = end - start;
+
+    if (diff < 0) {
+        alert("Конечная дата и время раньше начальной!");
+        return;
+    }
+    
     let minutes = Math.floor(diff / 60000) % 60;
     let hours = Math.floor(diff / 3600000);
 
