@@ -23,7 +23,7 @@
       <td class="middel">
         <div class="box">
           <div class="boxtitle">Результат:</div> 
-          <p align="center" style="font-size: 18px;"><span id="calcResult">Заполните поля и нажмите «Посчитать»</span></p>
+          <p align="center" style="font-size: 18px;"><span id="calcResult">Заполните поля и нажмите «Посчитать»</span><br><input type="submit" value="Сбросить" id="calcReset"></p>
           <link><a href="https://t.me/uniin" target="_blank">Тех. администратор</a><link>
         </div>
       </td>
@@ -38,6 +38,7 @@
   }
 
   var btn = document.getElementById('calcBtn');
+  var reset = document.getElementById('calcReset');
   if (!btn || btn.dataset.ready) return;
   btn.dataset.ready = '1';
 
@@ -48,11 +49,13 @@
   }
 
   var today = new Date();
+  var minDate = new Date(today);
+  minDate.setFullYear(minDate.getFullYear() - 2);
   var maxDate = new Date(today);
   maxDate.setFullYear(maxDate.getFullYear() + 2);
 
   document.getElementById('date1').value = localDateValue(today);
-  document.getElementById('date1').min = localDateValue(today);
+  document.getElementById('date1').min = localDateValue(minDate);
   document.getElementById('date1').max = localDateValue(maxDate);
   document.getElementById('time1').value = '17:00';
   document.getElementById('time2').value = '8';
@@ -89,6 +92,14 @@
     result.innerHTML = 'Итоговая дата и время: ' + formattedDate + ' ' + formattedTime +
                        '<br>Добавлено: ' + hours + ' часов' +
                        '<br>' + (hours * 60) + ' минут';
+  };
+  reset.onclick = function () {
+    document.getElementById('date1').value = localDateValue(today);
+	document.getElementById('date1').min = localDateValue(minDate);
+	document.getElementById('date1').max = localDateValue(maxDate);
+	document.getElementById('time1').value = '17:00';
+	document.getElementById('time2').value = '8';
+	document.getElementById('calcResult').innerHTML = 'Заполните поля и нажмите «Посчитать»';
   };
 })();
 </script>

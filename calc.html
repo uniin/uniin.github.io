@@ -47,6 +47,8 @@
 
   var today = new Date();
   var todayValue = localDateValue(today);
+  var minDate = new Date(today);
+  minDate.setFullYear(minDate.getFullYear() - 2);
   var maxDate = new Date(today);
   maxDate.setFullYear(maxDate.getFullYear() + 2);
 
@@ -55,9 +57,9 @@
   document.getElementById('date2').value = todayValue;
   document.getElementById('time2').value = '18:00';
 
-  document.getElementById('date1').min = todayValue;
+  document.getElementById('date1').min = localDateValue(minDate);
   document.getElementById('date1').max = localDateValue(maxDate);
-  document.getElementById('date2').min = todayValue;
+  document.getElementById('date2').min = localDateValue(minDate);
   document.getElementById('date2').max = localDateValue(maxDate);
 
   btn.onclick = function () {
