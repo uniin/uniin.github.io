@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Сколько прошло времени</title>
+</head>
+<body>
+
+<table width="100%" border="0">
+  <tbody>
+    <tr>
+      <td class="top" style="color: #FFFFFF; text-shadow: #434343 1px 0 10px;"><h1>Сколько прошло времени</h1></td>
+    </tr>
+    <tr>
+      <td class="middel">
+        <div class="box">
+          <div class="boxtitle">Выберите дату, время начала и окончания</div>
+		  <p align="center">Дата начала: <input type="date" id="date1"> Время начала: <input type="time" id="time1"> Дата окончания: <input type="date" id="date2"> Время окончания: <input type="time" id="time2"> <input type="submit" value="Посчитать" id="calcBtn"></p>	  
+        </div>
+      </td>
+    </tr>
+	<tr>
+      <td class="middel">
+        <div class="box">
+          <div class="boxtitle">Результат:</div> 
+          <p align="center" style="font-size: 18px;"><span id="calcResult">Заполните поля и нажмите «Посчитать»</span><br><input type="submit" value="Сбросить" id="calcReset"></p>
+          <link><a href="https://t.me/uniin" target="_blank">Тех. администратор</a><link>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+(function () {
+  var btn = document.getElementById('calcBtn');
+  var reset = document.getElementById('calcReset');
+  if (!btn || btn.dataset.ready) return;
+  btn.dataset.ready = '1';
+
+  function localDateValue(date) {
+    var year = date.getFullYear();
+    var month = String(date.getMonth() + 1).padStart(2, '0');
+    var day = String(date.getDate()).padStart(2, '0');
+    return year + '-' + month + '-' + day;
+  }
+
+  var today = new Date();
+  var todayValue = localDateValue(today);
+  var maxDate = new Date(today);
+  maxDate.setFullYear(maxDate.getFullYear() + 2);
+
+  document.getElementById('date1').value = todayValue;
+  document.getElementById('time1').value = '10:00';
+  document.getElementById('date2').value = todayValue;
+  document.getElementById('time2').value = '18:00';
+
+  document.getElementById('date1').min = todayValue;
+  document.getElementById('date1').max = localDateValue(maxDate);
+  document.getElementById('date2').min = todayValue;
+  document.getElementById('date2').max = localDateValue(maxDate);
+
+  btn.onclick = function () {
+    var date1 = document.getElementById('date1').value;
+    var time1 = document.getElementById('time1').value;
+    var date2 = document.getElementById('date2').value;
+    var time2 = document.getElementById('time2').value;
+    var result = document.getElementById('calcResult');
+
+    if (!date1 || !time1 || !date2 || !time2) {
+      result.innerHTML = 'Заполните все поля';
+      return;
+    }
+
+    var start = new Date(date1 + 'T' + time1);
+    var end = new Date(date2 + 'T' + time2);
+    var difference = end - start;
+
+    if (difference < 0) {
+      result.innerHTML = 'Дата окончания должна быть позже даты начала';
+      return;
+    }
+
+    var twoYearsLater = new Date(start);
+    twoYearsLater.setFullYear(twoYearsLater.getFullYear() + 2);
+
+    if (end > twoYearsLater) {
+      result.innerHTML = 'Максимальный период — 2 года';
+      return;
+    }
+
+    var totalMinutes = Math.floor(difference / 60000);
+    var hours = Math.floor(totalMinutes / 60);
+    var minutes = totalMinutes % 60;
+
+    result.innerHTML = 'Прошло: ' + hours + ' часов, ' + minutes + ' минут<br>' + totalMinutes + ' минут';
+  };
+
+  reset.onclick = function () {
+    document.getElementById('date1').value = todayValue;
+    document.getElementById('time1').value = '10:00';
+    document.getElementById('date2').value = todayValue;
+    document.getElementById('time2').value = '18:00';
+    document.getElementById('calcResult').innerHTML = 'Заполните поля и нажмите «Посчитать»';
+  };
+})();
+</script>
+
+</body>
+</html>

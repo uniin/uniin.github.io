@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Часы прибавить к дате и минутам</title>
+</head>
+<body>
+
+<table width="100%" border="0">
+  <tbody>
+    <tr>
+      <td class="top" style="color: #FFFFFF; text-shadow: #434343 1px 0 10px;"><h1>Часы прибавить к дате и минутам</h1></td>
+    </tr>
+    <tr>
+      <td class="middel">
+        <div class="box">
+          <div class="boxtitle">Выберите дату и время</div>
+		  <p align="center">Дата: <input type="date" id="date1"> Время: <input type="time" id="time1"> Прибавить часов: <input type="number" id="time2" min="0" max="17520" step="0.01"> <input type="submit" value="Посчитать" id="calcBtn"></p>	  
+        </div>
+      </td>
+    </tr>
+	<tr>
+      <td class="middel">
+        <div class="box">
+          <div class="boxtitle">Результат:</div> 
+          <p align="center" style="font-size: 18px;"><span id="calcResult">Заполните поля и нажмите «Посчитать»</span></p>
+          <link><a href="https://t.me/uniin" target="_blank">Тех. администратор</a><link>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+(function () {
+  function pad(value) {
+    return String(value).padStart(2, '0');
+  }
+
+  var btn = document.getElementById('calcBtn');
+  if (!btn || btn.dataset.ready) return;
+  btn.dataset.ready = '1';
+
+  function localDateValue(date) {
+    return date.getFullYear() + '-' +
+      String(date.getMonth() + 1).padStart(2, '0') + '-' +
+      String(date.getDate()).padStart(2, '0');
+  }
+
+  var today = new Date();
+  var maxDate = new Date(today);
+  maxDate.setFullYear(maxDate.getFullYear() + 2);
+
+  document.getElementById('date1').value = localDateValue(today);
+  document.getElementById('date1').min = localDateValue(today);
+  document.getElementById('date1').max = localDateValue(maxDate);
+  document.getElementById('time1').value = '17:00';
+  document.getElementById('time2').value = '8';
+
+  btn.onclick = function () {
+    var date = document.getElementById('date1').value;
+    var time = document.getElementById('time1').value;
+    var hoursText = document.getElementById('time2').value;
+    var result = document.getElementById('calcResult');
+    var hours = Number(hoursText);
+
+    if (!date || !time || hoursText === '' || !isFinite(hours) || hours < 0) {
+      result.innerHTML = 'Заполните все поля корректно';
+      return;
+    }
+
+    var startDate = new Date(date + 'T' + time);
+    var maximumDate = new Date(startDate);
+    maximumDate.setFullYear(maximumDate.getFullYear() + 2);
+
+    var finalDate = new Date(startDate);
+    finalDate.setMinutes(finalDate.getMinutes() + hours * 60);
+
+    if (finalDate > maximumDate) {
+      result.innerHTML = 'Можно прибавить максимум 2 года';
+      return;
+    }
+
+    var formattedDate = pad(finalDate.getDate()) + '.' +
+                        pad(finalDate.getMonth() + 1) + '.' +
+                        finalDate.getFullYear();
+    var formattedTime = pad(finalDate.getHours()) + ':' + pad(finalDate.getMinutes());
+
+    result.innerHTML = 'Итоговая дата и время: ' + formattedDate + ' ' + formattedTime +
+                       '<br>Добавлено: ' + hours + ' часов' +
+                       '<br>' + (hours * 60) + ' минут';
+  };
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Сколько часов и минут</title>
+</head>
+<body>
+
+<table width="100%" border="0">
+  <tbody>
+    <tr>
+      <td class="top" style="color: #FFFFFF; text-shadow: #434343 1px 0 10px;"><h1>Сколько часов и минут</h1></td>
+    </tr>
+    <tr>
+      <td class="middel">
+        <div class="box">
+          <div class="boxtitle">Введите количество минут</div>
+		  <p align="center">Минуты: <input type="number" id="time1" min="0" max="1051200" step="1" value="545"> <input type="submit" value="Посчитать" id="calcBtn"></p>	  
+        </div>
+      </td>
+    </tr>
+	<tr>
+      <td class="middel">
+        <div class="box">
+          <div class="boxtitle">Результат:</div> 
+          <p align="center" style="font-size: 18px;"><span id="calcResult">Введите количество минут</span></p>
+          <link><a href="https://t.me/uniin" target="_blank">Тех. администратор</a><link>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+(function () {
+  var btn = document.getElementById('calcBtn');
+  if (!btn || btn.dataset.ready) return;
+  btn.dataset.ready = '1';
+
+  btn.onclick = function () {
+    var input = document.getElementById('time1');
+    var result = document.getElementById('calcResult');
+    var totalMinutes = Number(input.value);
+
+    if (input.value === '' || !isFinite(totalMinutes) || totalMinutes < 0) {
+      result.innerHTML = 'Введите корректное количество минут';
+      return;
+    }
+
+    if (totalMinutes > 1051200) {
+      result.innerHTML = 'Максимум — 1 051 200 минут (2 года)';
+      return;
+    }
+
+    totalMinutes = Math.floor(totalMinutes);
+    var hours = Math.floor(totalMinutes / 60);
+    var minutes = totalMinutes % 60;
+
+    result.innerHTML = 'Итого: ' + hours + ' часов, ' + minutes + ' минут';
+  };
+})();
+</script>
+
+</body>
+</html>
