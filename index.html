@@ -31,7 +31,7 @@
     <tr>
       <td align="center">
         <ul>
-		  <a href="home.php" class="ajax-link" data-id="info"><li>О нас</li></a>
+		  <a href="home.html" class="ajax-link" data-id="info"><li>О нас</li></a>
           <a href="calc.html" class="ajax-link" data-id="time"><li>Калькулятор работ</li></a>
 		  <a href="calc_minutes.html" class="ajax-link" data-id="hours"><li>Сколько времени из минут</li></a>
 		  <a href="calc_hours.html" class="ajax-link" data-id="plus"><li>Прибавить n часов</li></a>
@@ -115,7 +115,7 @@ $(function(){
         if(id) $(".ajax-link[data-id='"+id+"']").find("li").addClass("active");
         else $(".ajax-link[href='"+url+"']").first().find("li").addClass("active");
     } else {
-        loadPage("home.php", false);
+        loadPage("home.html", false);
     }
 });
 </script>

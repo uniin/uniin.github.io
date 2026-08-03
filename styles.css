@@ -135,8 +135,6 @@ body {
 	padding: 0px;
 	margin: 0px;
 	font-family: 'main';
-	background-image: url(logo.png);
-	background-repeat: repeat;
 }
 textarea {
 	font-size: 14px;
